@@ -284,6 +284,7 @@
   <button class="nav-btn" onclick="goTo('rengoring')">🧹 Rengøring</button>
   <button class="nav-btn" onclick="goTo('admin')">📄 Administration</button>
   <button class="nav-btn" onclick="goTo('socialt')">❤️ Socialt Liv</button>
+  <button class="nav-btn" onclick="goTo('john')">👤 Eksempel John</button>
 </nav>
 
 <!-- ═══════════════ FORSIDE ═══════════════ -->
@@ -840,7 +841,7 @@
           <div class="tip red">⚠️ Bor du til leje? Tjek din kontrakt! De fleste tilladte normale billedophæng – men ikke store installationer.</div>
         </div>
     </div>
-    
+
     <div class="section">
       <div class="section-title">Vask af tøj – en kort guide</div>
       <div class="card">
@@ -991,24 +992,6 @@
     </div>
 
     <div class="section">
-      <div class="section-title">🗺️ Mine steder i Esbjerg</div>
-      <div class="card" style="padding:0;overflow:hidden;">
-
-        <!-- Kort -->
-        <div id="esbjerg-kort" style="height:360px;width:100%;z-index:1;"></div>
-
-        <!-- Ingen tilføj-formular – steder styres via koden af ejeren -->
-
-
-        <!-- Liste over gemte steder -->
-        <div id="kort-liste-wrap" style="padding:0 24px 20px;display:none;">
-          <div style="font-weight:600;font-size:0.85em;color:var(--navy);margin-bottom:10px;padding-top:4px;">Mine anbefalede steder:</div>
-          <div id="kort-liste" style="display:flex;flex-direction:column;gap:7px;"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
       <div class="section-title">Håndtering af ensomhed og hjemve</div>
       <div class="card">
         <p style="margin-bottom:16px;color:var(--muted);">Det er helt normalt at savne hjemmet de første uger. Det går over – her er hvad der hjælper:</p>
@@ -1023,6 +1006,33 @@
         <div class="tip green">💚 Husk: De studerende du møder på gangen er i præcis den samme situation. Alle starter forfra – du er ikke alene!</div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════ EKSEMPEL JOHN ═══════════════ -->
+<div class="page" id="john">
+  <div class="page-header">
+    <div class="breadcrumb">👤 Eksempel John</div>
+    <h1>Eksempel John</h1>
+    <p>Et personligt eksempel – med kort og egne anbefalede steder</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">🗺️ Mine steder i Esbjerg</div>
+      <div class="card" style="padding:0;overflow:hidden;">
+
+        <!-- Kort -->
+        <div id="esbjerg-kort" style="height:360px;width:100%;z-index:1;"></div>
+
+        <!-- Liste over gemte steder -->
+        <div id="kort-liste-wrap" style="padding:0 24px 20px;display:none;">
+          <div style="font-weight:600;font-size:0.85em;color:var(--navy);margin-bottom:10px;padding-top:4px;">Mine anbefalede steder:</div>
+          <div id="kort-liste" style="display:flex;flex-direction:column;gap:7px;"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1180,11 +1190,6 @@
 
 <script>
   // ── SKATTEBEREGNER – officiel dansk formel ──
-  // Trin 1: A = L × 0,08          (AM-bidrag, 8% af bruttoløn)
-  // Trin 2: G = (L − A) − F       (Skattegrundlag: løn efter AM minus personfradrag)
-  // Trin 3: S = G × (T/100)       (Indkomstskat; S = 0 hvis G < 0)
-  // Trin 4: U = L − A − S         (Udbetalt beløb)
-
   function fmt(kr) {
     return Math.round(kr).toLocaleString('da-DK') + ' kr.';
   }
@@ -1199,28 +1204,18 @@
     document.getElementById('sb-tom').style.display = harInput ? 'none' : 'block';
     if (!harInput) return;
 
-    // Trin 1 – AM-bidrag
     const A = L * 0.08;
-
-    // Trin 2 – Skattegrundlag
     const G = (L - A) - F;
-
-    // Trin 3 – Indkomstskat
     const S = G > 0 ? G * (T / 100) : 0;
-
-    // Trin 4 – Udbetalt
     const U = L - A - S;
-
     const samletSkat = A + S;
     const effPct = L > 0 ? (samletSkat / L * 100).toFixed(1) : '0';
 
-    // Resumé
     document.getElementById('sb-brutto').textContent = fmt(L);
     document.getElementById('sb-total-skat').textContent = fmt(samletSkat);
     document.getElementById('sb-udbetalt').textContent = fmt(U);
     document.getElementById('sb-pct').textContent = effPct + '%';
 
-    // Tabel med trin-for-trin visning
     const tbody = document.getElementById('sb-tabel');
     tbody.innerHTML = `
       <tr>
@@ -1256,7 +1251,6 @@
         <td><strong style="color:var(--teal);">${fmt(U)}</strong></td>
       </tr>`;
 
-    // Note
     const noteEl = document.getElementById('sb-note');
     if (G <= 0) {
       noteEl.className = 'tip green';
@@ -1275,31 +1269,21 @@
       if (b.getAttribute('onclick') === "goTo('" + id + "')") b.classList.add('active');
     });
     window.scrollTo(0, 0);
-    // Initiér kortet første gang socialt-siden vises
-    if (id === 'socialt' && !kortInitieret) initKort();
+    // Initiér kortet første gang john-siden vises
+    if (id === 'john' && !kortInitieret) initKort();
   }
 </script>
 
 <!-- Leaflet kort -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-  // ════════════════════════════════════════════════════════════════
-  // DINE STEDER – kun du redigerer denne liste og pusher til GitHub
-  // Skriv bare en adresse – koordinater finder siden selv automatisk.
-  //
-  // Eksempel:
-  //   { id: 1, navn: "Min café", beskrivelse: "Bedste kaffe i byen", adresse: "Skolegade 12, Esbjerg" },
-  // ════════════════════════════════════════════════════════════════
   const MINE_STEDER = [
-    // ← TILFØJ DINE STEDER HER, ét pr. linje:
-    // { id: 1, navn: "Stedets navn", beskrivelse: "Kort beskrivelse", adresse: "Gadenavn 1, Esbjerg" },
     { id: 1, navn: "cafe", beskrivelse: "cafen med bedste cafe mad og drikke", adresse: "kløvervej 12, Esbjerg" },
   ];
-  // ════════════════════════════════════════════════════════════════
 
   let kort = null;
   let kortInitieret = false;
-  let markoerListe = []; // { id, marker, lat, lng }
+  let markoerListe = [];
 
   const IKON_NORMAL = L.divIcon({
     className: '',
@@ -1332,14 +1316,13 @@
 
     opdaterListe();
 
-    // Geocod og tilføj alle steder (med lille forsinkelse mellem kald – Nominatim kræver det)
     for (const s of MINE_STEDER) {
       const koord = await geocodeAdresse(s.adresse);
       if (!koord) { console.warn(`Kunne ikke finde adresse: ${s.adresse}`); continue; }
       const m = L.marker([koord.lat, koord.lng], { icon: IKON_NORMAL }).addTo(kort);
       m.bindPopup(`<strong>${s.navn}</strong>${s.beskrivelse ? '<br><span style="color:#6B7A8D;font-size:0.9em;">' + s.beskrivelse + '</span>' : ''}<br><span style="font-size:0.8em;color:#aaa;">${s.adresse}</span>`);
       markoerListe.push({ id: s.id, marker: m, lat: koord.lat, lng: koord.lng });
-      await new Promise(r => setTimeout(r, 300)); // lille pause mellem geocoding-kald
+      await new Promise(r => setTimeout(r, 300));
     }
   }
 
