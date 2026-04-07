@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flytte Hjemmefra – Din Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFFDF7;
+    --navy: #1C2B3A;
+    --gold: #F5A623;
+    --gold-light: #FEF3DC;
+    --teal: #2A7A6F;
+    --teal-light: #E0F2EF;
+    --coral: #E85D3A;
+    --coral-light: #FDEEE9;
+    --text: #2C3E50;
+    --muted: #6B7A8D;
+    --border: #E8E4D9;
+    --white: #FFFFFF;
+    --radius: 12px;
+    --shadow: 0 2px 20px rgba(28,43,58,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--navy);
+    display: flex; align-items: center; gap: 0;
+    padding: 0 24px; height: 56px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    color: var(--gold);
+    font-size: 1.1em;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-right: 20px;
+    flex-shrink: 0;
+  }
+  .nav-btn {
+    background: none; border: none;
+    color: rgba(255,255,255,0.65);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82em; font-weight: 500;
+    padding: 6px 12px; border-radius: 6px;
+    cursor: pointer; white-space: nowrap;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .nav-btn.active { color: var(--navy); background: var(--gold); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 80px 0 60px; min-height: 100vh; }
+  .page.active { display: block; }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 28px; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    padding: 70px 28px 60px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(245,166,35,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(42,122,111,0.12) 0%, transparent 50%);
+  }
+  .hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
+  .hero-tag {
+    display: inline-block; background: var(--gold); color: var(--navy);
+    font-size: 0.75em; font-weight: 600; padding: 4px 12px;
+    border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.4em, 6vw, 3.6em);
+    font-weight: 900; color: #fff;
+    line-height: 1.1; margin-bottom: 18px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p { color: rgba(255,255,255,0.72); font-size: 1.1em; line-height: 1.7; max-width: 560px; margin: 0 auto 36px; }
+  .hero-cards {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px; max-width: 720px; margin: 0 auto;
+  }
+  .hero-card {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer; transition: all 0.2s; text-align: left;
+  }
+  .hero-card:hover { background: rgba(245,166,35,0.2); border-color: var(--gold); transform: translateY(-2px); }
+  .hero-card .ic { font-size: 1.4em; }
+  .hero-card span { color: rgba(255,255,255,0.85); font-size: 0.88em; font-weight: 500; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: var(--navy); padding: 44px 28px 36px;
+    margin-bottom: 40px;
+  }
+  .page-header .breadcrumb {
+    color: var(--gold); font-size: 0.78em; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px;
+  }
+  .page-header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2em, 5vw, 2.8em);
+    font-weight: 800; color: #fff; line-height: 1.15;
+  }
+  .page-header p { color: rgba(255,255,255,0.65); margin-top: 10px; font-size: 1.05em; }
+
+  /* ── SECTIONS & CARDS ── */
+  .section { margin-bottom: 36px; }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.45em; font-weight: 700;
+    color: var(--navy); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px 28px;
+    margin-bottom: 16px; box-shadow: var(--shadow);
+  }
+  .card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1em; font-weight: 700;
+    color: var(--navy); margin-bottom: 12px;
+  }
+  .card p, .card li { color: var(--text); line-height: 1.75; font-size: 0.97em; }
+  .card ul, .card ol { padding-left: 20px; }
+  .card li { margin-bottom: 6px; }
+
+  /* ── TIP BOX ── */
+  .tip {
+    background: var(--gold-light); border-left: 4px solid var(--gold);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px; margin: 14px 0;
+    font-size: 0.93em; line-height: 1.65;
+  }
+  .tip.green { background: var(--teal-light); border-color: var(--teal); }
+  .tip.red { background: var(--coral-light); border-color: var(--coral); }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 14px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+  th {
+    background: var(--navy); color: #fff;
+    padding: 10px 14px; text-align: left; font-weight: 600; font-size: 0.88em;
+  }
+  td { border-bottom: 1px solid var(--border); padding: 10px 14px; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--cream); }
+  .tr-total td { background: var(--gold-light) !important; font-weight: 700; color: var(--navy); }
+  .stars { color: var(--gold); }
+
+  /* ── GRID CARDS ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 640px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+  .mini-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 20px;
+    box-shadow: var(--shadow);
+  }
+  .mini-card .icon { font-size: 1.8em; margin-bottom: 8px; display: block; }
+  .mini-card h4 { font-family: 'Fraunces', serif; font-size: 1em; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .mini-card p { font-size: 0.88em; color: var(--muted); line-height: 1.6; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-size: 0.73em; font-weight: 600;
+    padding: 3px 9px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .badge.gold { background: var(--gold-light); color: #9b6a00; }
+  .badge.teal { background: var(--teal-light); color: var(--teal); }
+  .badge.coral { background: var(--coral-light); color: var(--coral); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.95em; color: var(--text); line-height: 1.5;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '✓'; color: var(--teal); font-weight: 700;
+    background: var(--teal-light); width: 20px; height: 20px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 0.75em; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* ── STEP LIST ── */
+  .steps { list-style: none; padding: 0; }
+  .steps li {
+    display: flex; gap: 16px; margin-bottom: 18px; align-items: flex-start;
+  }
+  .step-num {
+    background: var(--navy); color: var(--gold);
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85em; font-weight: 700; flex-shrink: 0;
+  }
+  .step-text { font-size: 0.95em; line-height: 1.7; padding-top: 4px; }
+  .step-text strong { color: var(--navy); }
+
+  /* ── BUDGET SUMMARY ── */
+  .budget-big {
+    background: var(--navy); color: #fff;
+    border-radius: var(--radius); padding: 28px;
+    display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 20px;
+  }
+  .budget-stat { flex: 1; min-width: 160px; }
+  .budget-stat .label { font-size: 0.78em; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .budget-stat .val { font-family: 'Fraunces', serif; font-size: 2em; font-weight: 800; color: var(--gold); }
+  .budget-stat .sub { font-size: 0.82em; color: rgba(255,255,255,0.6); margin-top: 2px; }
+
+  /* ── RECIPE CARD ── */
+  .recipe {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 16px;
+  }
+  .recipe-header {
+    background: var(--teal); color: #fff;
+    padding: 16px 22px;
+  }
+  .recipe-header h3 { font-family: 'Fraunces', serif; font-size: 1.15em; font-weight: 700; margin-bottom: 4px; }
+  .recipe-header p { font-size: 0.85em; opacity: 0.8; }
+  .recipe-body { padding: 20px 22px; }
+  .recipe-body ol { padding-left: 20px; }
+  .recipe-body li { font-size: 0.92em; line-height: 1.7; margin-bottom: 4px; color: var(--text); }
+
+  /* ── DAY PLAN ── */
+  .day-plan { display: grid; gap: 8px; }
+  .day-row {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 16px;
+  }
+  .day-name { font-weight: 600; font-size: 0.82em; color: var(--navy); min-width: 80px; }
+  .day-meal { font-size: 0.9em; color: var(--text); flex: 1; }
+  .day-price { font-weight: 600; color: var(--teal); font-size: 0.85em; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✈️ Flytte Hjemmefra</div>
+  <button class="nav-btn active" onclick="goTo('home')">🏠 Forside</button>
+  <button class="nav-btn" onclick="goTo('budget')">💰 Budget</button>
+  <button class="nav-btn" onclick="goTo('skat')">💸 Skat</button>
+  <button class="nav-btn" onclick="goTo('bolig')">🏡 Bolig</button>
+  <button class="nav-btn" onclick="goTo('mad')">🍳 Mad</button>
+  <button class="nav-btn" onclick="goTo('transport')">🚲 Transport</button>
+  <button class="nav-btn" onclick="goTo('diy')">🔧 DIY</button>
+  <button class="nav-btn" onclick="goTo('rengoring')">🧹 Rengøring</button>
+  <button class="nav-btn" onclick="goTo('admin')">📄 Administration</button>
+  <button class="nav-btn" onclick="goTo('socialt')">❤️ Socialt Liv</button>
+</nav>
+
+<!-- ═══════════════ FORSIDE ═══════════════ -->
+<div class="page active" id="home">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Din Komplette Guide</div>
+      <h1>Tillykke med<br><span>drømmestudiet!</span></h1>
+      <p>Du er optaget i Esbjerg og har 25.000 kr. klar. Nu starter det spændende kapitel – og denne guide hjælper dig med <em>alt</em> det praktiske.</p>
+      <div class="hero-cards">
+        <div class="hero-card" onclick="goTo('budget')"><span class="ic">💰</span><span>Budget & Økonomi</span></div>
+        <div class="hero-card" onclick="goTo('skat')"><span class="ic">💸</span><span>Skattebetaling</span></div>
+        <div class="hero-card" onclick="goTo('bolig')"><span class="ic">🏡</span><span>Bolig i Esbjerg</span></div>
+        <div class="hero-card" onclick="goTo('mad')"><span class="ic">🍳</span><span>Mad & Husholdning</span></div>
+        <div class="hero-card" onclick="goTo('diy')"><span class="ic">🔧</span><span>DIY & Håndværk</span></div>
+        <div class="hero-card" onclick="goTo('transport')"><span class="ic">🚲</span><span>Transport & Cykel</span></div>
+        <div class="hero-card" onclick="goTo('rengoring')"><span class="ic">🧹</span><span>Rengøring</span></div>
+        <div class="hero-card" onclick="goTo('admin')"><span class="ic">📄</span><span>Administration</span></div>
+        <div class="hero-card" onclick="goTo('socialt')"><span class="ic">❤️</span><span>Socialt Liv</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:40px;">
+    <div class="section">
+      <div class="section-title">Dit udgangspunkt</div>
+      <div class="budget-big">
+        <div class="budget-stat">
+          <div class="label">Din opsparing</div>
+          <div class="val">25.000 kr.</div>
+          <div class="sub">Klar til at flytte</div>
+        </div>
+        <div class="budget-stat">
+          <div class="label">SU udeboende</div>
+          <div class="val">7.426 kr.</div>
+          <div class="sub">Per måned</div>
+        </div>
+        <div class="budget-stat">
+          <div class="label">Kollegie Esbjerg</div>
+          <div class="val">3.000 kr.</div>
+          <div class="sub">Ca. per måned</div>
+        </div>
+        <div class="budget-stat">
+          <div class="label">Månedligt overskud</div>
+          <div class="val">ca. 3.000 kr.</div>
+          <div class="sub">Med deltidsjob mere</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Hvad skal du ordne – og hvornår?</div>
+      <div class="grid2">
+        <div class="mini-card">
+          <span class="icon">📋</span>
+          <h4>Inden du flytter</h4>
+          <p>Find bolig, søg SU, opsæt MitID og e-Boks, tegn indboforsikring, meld adresseflytning.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🗓️</span>
+          <h4>Første uge</h4>
+          <p>Udpak, lær nabolaget at kende, find din dagligbutik, tilmeld dig studiestart­arrangementer.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">📅</span>
+          <h4>Første måned</h4>
+          <p>Lav et fast budget, find et deltidsjob, opbyg rutiner for madplan og rengøring.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🎯</span>
+          <h4>Løbende</h4>
+          <p>Vedligehold hjemmet, hold budgettet, plej dit sociale liv og husk at tage dig af dig selv.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BUDGET ═══════════════ -->
+<div class="page" id="budget">
+  <div class="page-header">
+    <div class="breadcrumb">💰 Budget & Økonomi</div>
+    <h1>Få styr på pengene</h1>
+    <p>25.000 kr. er et godt fundament – her er planen for at bruge dem klogt</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Hvad bruger du opsparingen på?</div>
+      <div class="card">
+        <p style="margin-bottom:16px;color:var(--muted);font-size:0.9em;">Engangsudgifter ved flytning til kollegie i Esbjerg</p>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Post</th><th>Beløb</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>Depositum (3 mdr. leje)</td><td><strong>9.000 kr.</strong></td><td>Betales tilbage ved fraflytning</td></tr>
+              <tr><td>Første måneds husleje</td><td><strong>3.000 kr.</strong></td><td>Kollegie Esbjerg ca.</td></tr>
+              <tr><td>Møbler og indretning (brugt)</td><td><strong>4.000 kr.</strong></td><td>Seng, bord, stol – køb brugt</td></tr>
+              <tr><td>Sengetøj, køkkenudstyr m.m.</td><td><strong>2.000 kr.</strong></td><td>Facebook Marketplace</td></tr>
+              <tr><td>Studiebøger – 1. semester</td><td><strong>2.500 kr.</strong></td><td>Overvej brugt eller deling</td></tr>
+              <tr><td>Nødopsparing / buffer</td><td><strong>4.500 kr.</strong></td><td>Til uforudsete udgifter</td></tr>
+              <tr class="tr-total"><td><strong>TOTAL</strong></td><td><strong>25.000 kr.</strong></td><td>✅ Passer præcis!</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip">💡 Husk: depositummet får du tilbage når du fraflytter – det er ikke penge du mister!</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Dit månedlige budget</div>
+      <div class="grid2">
+        <div class="card">
+          <h3>Indtægter / måned</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Kilde</th><th>Beløb</th></tr></thead>
+              <tbody>
+                <tr><td>SU (udeboende)</td><td>7.426 kr.</td></tr>
+                <tr><td>Deltidsjob (10t/uge)</td><td>5.400 kr.</td></tr>
+                <tr class="tr-total"><td><strong>Total</strong></td><td><strong>12.826 kr.</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Udgifter / måned</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Post</th><th>Beløb</th></tr></thead>
+              <tbody>
+                <tr><td>Husleje (kollegie)</td><td>3.000 kr.</td></tr>
+                <tr><td>Mad og dagligvarer</td><td>1.800 kr.</td></tr>
+                <tr><td>Transport</td><td>300 kr.</td></tr>
+                <tr><td>Telefon</td><td>149 kr.</td></tr>
+                <tr><td>Forsikring (indbo)</td><td>130 kr.</td></tr>
+                <tr><td>Sociale aktiviteter</td><td>500 kr.</td></tr>
+                <tr><td>Diverse</td><td>350 kr.</td></tr>
+                <tr class="tr-total"><td><strong>Total</strong></td><td><strong>6.229 kr.</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="tip green">✅ <strong>Månedligt overskud: ca. 6.597 kr.</strong> – sæt dem i opsparing eller brug dem på ekstra socialt liv og studiematerialer.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sådan laver du et budget</div>
+      <div class="card">
+        <ol class="steps">
+          <li><div class="step-num">1</div><div class="step-text"><strong>Skriv alle indtægter ned</strong> – SU, løn, evt. støtte fra forældre.</div></li>
+          <li><div class="step-num">2</div><div class="step-text"><strong>List alle faste udgifter</strong> – husleje, telefon, forsikring. Disse er de samme hver måned.</div></li>
+          <li><div class="step-num">3</div><div class="step-text"><strong>Estimer variable udgifter</strong> – mad, transport, tøj, fornøjelser. Kig i din bankapp fra seneste måneder.</div></li>
+          <li><div class="step-num">4</div><div class="step-text"><strong>Udgifter trækkes fra indtægter</strong> – er der overskud? Sæt dem på opsparing. Underskud? Find hvad du kan skære.</div></li>
+          <li><div class="step-num">5</div><div class="step-text"><strong>Brug en budgetapp</strong> – Spiir eller et enkelt Google Sheets er gratis og super effektivt.</div></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">6 konkrete sparetips</div>
+      <div class="grid2">
+        <div class="mini-card"><span class="icon">🛒</span><h4>Discountbutikker</h4><p>Aldi, Netto og Lidl er markant billigere end Fakta eller SuperBrugsen. Spar 30-40% på dagligvarer.</p></div>
+        <div class="mini-card"><span class="icon">📱</span><h4>Spare apps</h4><p>Spar penge via apps, som too good to go og etilbudsavis.</p></div>
+        <div class="mini-card"><span class="icon">🚴</span><h4>Cyklen er din bedste ven</h4><p>Esbjerg er meget cykelvenlig. Cykl til studiet og spar alle transportudgifter.</p></div>
+        <div class="mini-card"><span class="icon">🎓</span><h4>Studierabatter</h4><p>Spørg ALTID om studierabat. Fitness, kino, software, transport – mange steder giver 10-20% rabat.</p></div>
+        <div class="mini-card"><span class="icon">🍲</span><h4>Kog store portioner</h4><p>Lav dobbelt portion og frys halvdelen. Sparer tid og penge – og du undgår madspild.</p></div>
+        <div class="mini-card"><span class="icon">📚</span><h4>Brugte studiebøger</h4><p>Køb bøger brugt på Saxo, studiegrupper eller fra ældre studerende. Spar op til 70%.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ BOLIG ═══════════════ -->
+<div class="page" id="bolig">
+  <div class="page-header">
+    <div class="breadcrumb">🏡 Bolig</div>
+    <h1>Find dit nye hjem i Esbjerg</h1>
+    <p>Esbjerg er en overkommelig studieby – her er dine muligheder</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Tre boligformer at vælge imellem</div>
+      <div class="grid3">
+        <div class="mini-card">
+          <span class="icon">🏢</span>
+          <h4>Kollegie</h4>
+          <span class="badge teal">2.500–3.500 kr./md.</span>
+          <p style="margin-top:8px;">Billigste mulighed. Socialt, ofte møbleret. Søg venteliste tidligt på boligportal.dk</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🏠</span>
+          <h4>Privat lejlighed</h4>
+          <span class="badge gold">4.500–7.000 kr./md.</span>
+          <p style="margin-top:8px;">Mere privatliv og plads. Dyrere, men billigere end København. Kræver depositum.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">👥</span>
+          <h4>Bofællesskab</h4>
+          <span class="badge coral">3.000–4.500 kr./md.</span>
+          <p style="margin-top:8px;">Del udgifter med andre. Socialt og sjovt. Find via Facebook-grupper eller opslag på studiet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Hvor finder du en bolig?</div>
+      <div class="card">
+        <ul class="checklist">
+          <li><strong>BoligPortal.dk</strong> – Danmarks største boligsite. Find kollegier og lejligheder i Esbjerg direkte her.</li>
+          <li><strong>Lejebolig.dk</strong> – Godt til private lejemål og bofællesskaber.</li>
+          <li><strong>Facebook Marketplace</strong> – Mange private udlejere bruger FB i stedet for portaler. Søg "leje Esbjerg".</li>
+          <li><strong>Dit studium</strong> – Spørg studiesekretæren, mange institutioner har interne boliglister.</li>
+          <li><strong>Opslag på campus</strong> – Tjek opslagstavlen ved studiet.</li>
+        </ul>
+        <div class="tip">💡 I Esbjerg er ventelisterne kortere end i Aarhus og København – men søg alligevel i god tid, gerne 3-6 måneder inden studiestart.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Lejekontrakt – hvad skal du tjekke?</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Tjekpunkt</th><th>Hvad du skal vide</th><th>Vigtighed</th></tr></thead>
+            <tbody>
+              <tr><td>Kontrakttype</td><td>Type A-kontrakt giver flest rettigheder som lejer</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Depositum</td><td>Må max. være 3 måneders husleje</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Opsigelsesvarsel</td><td>Typisk 3 måneder fra lejer, 1 år fra udlejer</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Vedligeholdelse</td><td>Hvem betaler for reparationer?</td><td class="stars">⭐⭐</td></tr>
+              <tr><td>El, vand, varme</td><td>Er det inkluderet eller betaler du selv?</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Husorden</td><td>Kæledyr? Rygning? Gæster?</td><td class="stars">⭐⭐</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip red">⚠️ Underskriv ALDRIG en kontrakt, du ikke har læst grundigt!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MAD ═══════════════ -->
+<div class="page" id="mad">
+  <div class="page-header">
+    <div class="breadcrumb">🍳 Mad & Husholdning</div>
+    <h1>Spis godt – uden at bruge en formue</h1>
+    <p>Sundt og billigt mad for under 1.800 kr. om måneden</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Ugentlig madplan</div>
+      <div class="day-plan">
+        <div class="day-row"><div class="day-name">Mandag</div><div class="day-meal">Pasta med tomatsauce og hakket oksekød</div><div class="day-price">~18 kr./pers.</div></div>
+        <div class="day-row"><div class="day-name">Tirsdag</div><div class="day-meal">Rester fra mandag + frisk salat</div><div class="day-price">~5 kr./pers.</div></div>
+        <div class="day-row"><div class="day-name">Onsdag</div><div class="day-meal">One-pot: ris, kylling og grøntsager</div><div class="day-price">~22 kr./pers.</div></div>
+        <div class="day-row"><div class="day-name">Torsdag</div><div class="day-meal">Grøntsagssuppe med groft brød</div><div class="day-price">~15 kr./pers.</div></div>
+        <div class="day-row"><div class="day-name">Fredag</div><div class="day-meal">Tacos med bønner og hakket kød</div><div class="day-price">~25 kr./pers.</div></div>
+        <div class="day-row"><div class="day-name">Lørdag</div><div class="day-meal">Pandekager / hyggemad</div><div class="day-price">~20 kr./pers.</div></div>
+        <div class="day-row"><div class="day-name">Søndag</div><div class="day-meal">Bagt kylling med ovnrodfrugter</div><div class="day-price">~30 kr./pers.</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Nemme opskrifter</div>
+      <div class="recipe">
+        <div class="recipe-header">
+          <h3>Klassisk pastaret</h3>
+          <p>4 portioner · 70 kr. · 20 minutter</p>
+        </div>
+        <div class="recipe-body">
+          <ol>
+            <li>Steg 400g hakket oksekød i en gryde med lidt olie ved middel varme</li>
+            <li>Tilsæt 1 dåse hakkede tomater (400g), 1 tsk oregano, salt og peber</li>
+            <li>Lad det simre i 10 minutter – rør jævnligt</li>
+            <li>Kog 400g pasta efter anvisning på pakken (typisk 8-10 min.)</li>
+            <li>Bland pasta og sauce – server evt. med revet ost på toppen</li>
+          </ol>
+          <div class="tip" style="margin-top:12px;">💡 Lav dobbelt portion og frys halvdelen! Perfekt til en travl hverdag.</div>
+        </div>
+      </div>
+
+      <div class="recipe">
+        <div class="recipe-header">
+          <h3>One-pot ris med kylling</h3>
+          <p>4 portioner · 80 kr. · 25 minutter</p>
+        </div>
+        <div class="recipe-body">
+          <ol>
+            <li>Skær 400g kyllingebryst i tern og brun dem i en stor gryde</li>
+            <li>Tilsæt 1 hakket løg og 2 fed hvidløg, steg 2 min.</li>
+            <li>Hæld 300g ris og 700ml hønsebouillon i gryden</li>
+            <li>Tilsæt 1 peberfrugt og en håndfuld frosne ærter</li>
+            <li>Lad det koge 15 minutter under låg – done!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Basislager – altid have derhjemme</div>
+      <div class="card">
+        <div class="grid2">
+          <ul class="checklist">
+            <li>Pasta og ris</li>
+            <li>Havregryn (billig morgenmad)</li>
+            <li>Dåsebønner og hakkede tomater</li>
+            <li>Kokosmælk (til curry)</li>
+          </ul>
+          <ul class="checklist">
+            <li>Løg, hvidløg og kartofler</li>
+            <li>Æg – billigste protein!</li>
+            <li>Olie, salt, peber, oregano, paprika</li>
+            <li>Ost og mælk</li>
+          </ul>
+        </div>
+        <div class="tip green">🛒 Et gennemtænkt basisindkøb på 200-300 kr. giver dig råvarer til 1-2 ugers madlavning.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TRANSPORT ═══════════════ -->
+<div class="page" id="transport">
+  <div class="page-header">
+    <div class="breadcrumb">🚲 Transport</div>
+    <h1>Cyklen er din bedste investering</h1>
+    <p>Esbjerg er en af Danmarks mest cykelvenlige byer – spar tusindvis af kroner om året</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Hvad koster det at købe en cykel?</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Type</th><th>Pris ny</th><th>Pris brugt</th><th>Passer til</th></tr></thead>
+            <tbody>
+              <tr><td>Simpel bycykel</td><td>1.500–3.000 kr.</td><td>400–800 kr.</td><td>Korte ture i byen</td></tr>
+              <tr><td>7-gears bycykel</td><td>3.000–5.000 kr.</td><td>800–1.500 kr.</td><td>Studiet + dagligdag</td></tr>
+              <tr><td>Elcykel</td><td>8.000–20.000 kr.</td><td>3.000–7.000 kr.</td><td>Lange strækninger</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip green">💡 En brugt 7-gears bycykel til 800–1.200 kr. er det absolut bedste valg som studerende. Køb på <strong>DBA.dk</strong>, <strong>Facebook Marketplace</strong> eller <strong>loppemarked</strong>.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Hvad skal du bruge med cyklen?</div>
+      <div class="grid3">
+        <div class="mini-card">
+          <span class="icon">🔒</span>
+          <h4>Godt cykellås</h4>
+          <span class="badge coral">Vigtig!</span>
+          <p style="margin-top:8px;">Investér i et ordentligt lås – mindst 200-400 kr. Et billigt lås er penge ud af vinduet. Brug to lås hvis muligt.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🪖</span>
+          <h4>Cykelhjelm</h4>
+          <span class="badge teal">Anbefales</span>
+          <p style="margin-top:8px;">Ikke lovpligtigt, men et smart valg. Fås fra 150 kr. brugt – eller som gave fra familien.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">💡</span>
+          <h4>Lygter</h4>
+          <span class="badge coral">Lovpligtigt!</span>
+          <p style="margin-top:8px;">Du skal have hvidt lys foran og rødt lys bagpå. USB-opladelige lygter koster ca. 80-150 kr. og er meget bedre end batterilygter.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🎒</span>
+          <h4>Cykeltaske eller rygsæk</h4>
+          <span class="badge gold">Praktisk</span>
+          <p style="margin-top:8px;">En bagagebærer med taske (ca. 200-300 kr.) er guld til indkøb og bøger. Alternativt en god rygsæk.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🌧️</span>
+          <h4>Regnjakke</h4>
+          <span class="badge gold">Esbjerg-must</span>
+          <p style="margin-top:8px;">Esbjerg er en vestjysk by – det regner og blæser! En god regnjakke er en af dine vigtigste investeringer.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🔧</span>
+          <h4>Reparationssæt</h4>
+          <span class="badge teal">Ca. 80 kr.</span>
+          <p style="margin-top:8px;">Plastre, lappekit og en mini-pumpe. Redder dig når du får punktering på vej til studiet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Vedligeholdelse – hvad koster det om året?</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Vedligeholdelse</th><th>Hyppighed</th><th>Pris</th><th>Gør det selv?</th></tr></thead>
+            <tbody>
+              <tr><td>Pumpe dækkene op</td><td>Månedligt</td><td>0 kr.</td><td>✅ Ja – pumpe koster 80 kr.</td></tr>
+              <tr><td>Olie på kæden</td><td>Hver 2. måned</td><td>0 kr.</td><td>✅ Ja – kædeolie koster 40 kr.</td></tr>
+              <tr><td>Lapning af punktering</td><td>1-2 gange/år</td><td>0-80 kr.</td><td>✅ Ja – lappekit 30 kr. + YouTube</td></tr>
+              <tr><td>Nyt slange (cykelhandler)</td><td>1-2 gange/år</td><td>80-150 kr.</td><td>Afhænger af dig</td></tr>
+              <tr><td>Bremse/gear-justering</td><td>1 gang/år</td><td>150-250 kr.</td><td>Svært – tag til cykelhandler</td></tr>
+              <tr><td>Nyt dæk</td><td>Hvert 2-3 år</td><td>150-300 kr./stk.</td><td>Cykelhandler anbefales</td></tr>
+              <tr class="tr-total"><td><strong>Total pr. år (estimat)</strong></td><td></td><td><strong>300–600 kr.</strong></td><td>Jo mere du selv gør, jo billigere</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip">💡 Lær at lappe en punktering selv – det tager 10 minutter med en YouTube-video og sparer dig 80-150 kr. hver gang.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Hvad sparer du sammenlignet med bus?</div>
+      <div class="card">
+        <div class="budget-big" style="margin-bottom:0;">
+          <div class="budget-stat">
+            <div class="label">Bus månedskort Esbjerg</div>
+            <div class="val">~350 kr.</div>
+            <div class="sub">Per måned</div>
+          </div>
+          <div class="budget-stat">
+            <div class="label">Cykel pr. måned</div>
+            <div class="val">~40 kr.</div>
+            <div class="sub">Vedligeholdelse fordelt</div>
+          </div>
+          <div class="budget-stat">
+            <div class="label">Besparelse</div>
+            <div class="val">~310 kr.</div>
+            <div class="sub">Per måned</div>
+          </div>
+          <div class="budget-stat">
+            <div class="label">Besparelse pr. år</div>
+            <div class="val">3.720 kr.</div>
+            <div class="sub">Det er en ny cykel!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Sådan lapper du en punktering</div>
+      <div class="card">
+        <ol class="steps">
+          <li><div class="step-num">1</div><div class="step-text"><strong>Tag hjulet af cyklen</strong> – løsn møtrikken med en skruenøgle eller brug hurtigspænder.</div></li>
+          <li><div class="step-num">2</div><div class="step-text"><strong>Træk slangen ud</strong> – brug dækjern til at løsne dækket fra fælgen.</div></li>
+          <li><div class="step-num">3</div><div class="step-text"><strong>Find hullet</strong> – pust slangen op og hold den ned i en spand vand. Bobler viser hullet.</div></li>
+          <li><div class="step-num">4</div><div class="step-text"><strong>Rens og slib</strong> – tør området, slib let med det medfølgende sandpapir fra lappekit.</div></li>
+          <li><div class="step-num">5</div><div class="step-text"><strong>Påfør lim, vent 2 min.</strong> – dæk med lappen og pres godt fast i 1 minut.</div></li>
+          <li><div class="step-num">6</div><div class="step-text"><strong>Saml hjulet igen</strong> – pust slangen halvt op, læg den i dækket, sæt dækket på fælgen og pust helt op.</div></li>
+        </ol>
+        <div class="tip green">✅ Hele processen tager 15-20 minutter første gang – og halvt så lang tid næste gang!</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ DIY ═══════════════ -->
+<div class="page" id="diy">
+  <div class="page-header">
+    <div class="breadcrumb">🔧 DIY & Håndværk</div>
+    <h1>Klaret selv – spar hundredvis af kroner</h1>
+    <p>Du behøver ikke en håndværker til alt</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Sådan hænger du et billede op</div>
+      <div class="card">
+        <ol class="steps">
+          <li><div class="step-num">1</div><div class="step-text"><strong>Find ud af hvad væggen er lavet af.</strong> Bank let – hul lyd = gipsvæg, massiv lyd = beton/mursten.</div></li>
+          <li><div class="step-num">2</div><div class="step-text"><strong>Vælg det rigtige ophæng.</strong> Gipsvæg: brug gipsplugger. Beton/mursten: brug rawlplug og boremaskine.</div></li>
+          <li><div class="step-num">3</div><div class="step-text"><strong>Mål og marker med blyant.</strong> Hold billedet op og marker præcist – brug en vaterpas-app på telefonen.</div></li>
+          <li><div class="step-num">4</div><div class="step-text"><strong>Bor hullet</strong> roligt og hold boret lodret. Start langsomt.</div></li>
+          <li><div class="step-num">5</div><div class="step-text"><strong>Isæt rawlplug og stram skruen.</strong> Ikke for hårdt – så revner væggen.</div></li>
+          <li><div class="step-num">6</div><div class="step-text"><strong>Hæng billedet op og tjek</strong> at det hænger vandret med vaterpas-appen.</div></li>
+        </ol>
+        <div class="tip red">⚠️ Bor du til leje? Tjek din kontrakt! De fleste tilladte normale billedophæng – men ikke store installationer.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Dit basisværktøjssæt</div>
+      <div class="grid3">
+        <div class="mini-card"><span class="icon">🔨</span><h4>Hammer</h4><p>Til søm og lette opgaver. Kan fås brugt for 30-50 kr.</p></div>
+        <div class="mini-card"><span class="icon">🪛</span><h4>Skruetrækker</h4><p>Køb et sæt med både flad og kryds. Kosten ca. 80 kr. brugt.</p></div>
+        <div class="mini-card"><span class="icon">📏</span><h4>Målebånd</h4><p>3-5 meter er rigeligt. Uundværligt til alle opgaver.</p></div>
+        <div class="mini-card"><span class="icon">🔩</span><h4>Rawlplugs & skruer</h4><p>Køb et blandingssæt – ca. 40 kr. og dækker de fleste behov.</p></div>
+        <div class="mini-card"><span class="icon">🩹</span><h4>Spartelmasse</h4><p>Til at dække huller i væggen igen. Essentielt for lejere!</p></div>
+        <div class="mini-card"><span class="icon">📱</span><h4>Vaterpas-app</h4><p>Gratis på App Store / Google Play. Virker via telefonens gyroskop.</p></div>
+      </div>
+      <div class="tip">💡 Du kan samle et komplet basisværktøjssæt for under 300 kr. via Facebook Marketplace eller loppemarked.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Småreparationer du kan klare selv</div>
+      <div class="card">
+        <ul class="checklist">
+          <li><strong>Dryppende vandhane</strong> – Skift tætningsringen. Find en YouTube-video for din hane-type.</li>
+          <li><strong>Sikring er sprunget</strong> – Find sikringsskabet (ofte i gang eller kælder) og skift/nulstil sikringen.</li>
+          <li><strong>Hul i væggen</strong> – Fyld med spartelmasse, lad det tørre 24 timer, slib og mal.</li>
+          <li><strong>Pibende dør</strong> – Smør hængsler med WD-40 eller madolie. Færdigt på 30 sekunder.</li>
+          <li><strong>Løst greb</strong> – Stram skruen bag grebet med en skruetrækker.</li>
+        </ul>
+        <div class="tip red">⚠️ El og VVS – overlad ALTID til autoriserede fagfolk! Forkert reparation kan være farligt og ulovligt.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ RENGØRING ═══════════════ -->
+<div class="page" id="rengoring">
+  <div class="page-header">
+    <div class="breadcrumb">🧹 Rengøring & Vedligeholdelse</div>
+    <h1>Et rent hjem giver en klar hjerne</h1>
+    <p>20-30 minutter om ugen er nok – med den rigtige rutine</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Ugentlig rengøringsplan</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Opgave</th><th>Hyppighed</th><th>Tid</th></tr></thead>
+            <tbody>
+              <tr><td>Støvsug gulve og tør støv af</td><td>Ugentligt</td><td>15 min.</td></tr>
+              <tr><td>Rengør toilet og håndvask</td><td>Ugentligt</td><td>10 min.</td></tr>
+              <tr><td>Vask opvask / tøm opvaskemaskine</td><td>Dagligt</td><td>5 min.</td></tr>
+              <tr><td>Tør komfur og køkkenbord af</td><td>Efter madlavning</td><td>3 min.</td></tr>
+              <tr><td>Vask gulv (moppe)</td><td>Hver 2. uge</td><td>15 min.</td></tr>
+              <tr><td>Rens bruseniche / badekar</td><td>Månedligt</td><td>10 min.</td></tr>
+              <tr><td>Vask sengetøj og håndklæder</td><td>Hver 1-2 uge</td><td>5 min. + maskinvask</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip green">✅ Sæt en fast dag i din kalender – f.eks. hver søndag. Det tager kortere tid end du tror, og du vænner dig hurtigt til det!</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Vask af tøj – en kort guide</div>
+      <div class="card">
+        <div class="grid2">
+          <div>
+            <h3 style="margin-bottom:12px;">Temperaturer</h3>
+            <ul class="checklist">
+              <li><strong>30°</strong> – Delikat tøj, uld og farvet vasketøj</li>
+              <li><strong>40°</strong> – Hverdagstøj: t-shirts, bukser, undertøj</li>
+              <li><strong>60°</strong> – Sengetøj, håndklæder og viskestykker</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin-bottom:12px;">Vigtige regler</h3>
+            <ul class="checklist">
+              <li>Tjek ALTID mærket i tøjet – det fortæller alt</li>
+              <li>Vask mørkt og lyst tøj separat – farver smitter!</li>
+              <li>Brug ikke mere sæbe end anbefalet</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tip">💡 Nyt hvidt tøj? Vask det alene første gang – det kan afgive farve!</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Affald og genbrug</div>
+      <div class="grid2">
+        <div class="mini-card"><span class="icon">♻️</span><h4>Sortering</h4><p>Papir, pap, glas, metal, plastik, restaffald. Find din kommunes affaldsguide på kommunens hjemmeside.</p></div>
+        <div class="mini-card"><span class="icon">🌿</span><h4>Madaffald</h4><p>Rester, kaffefiltre, frugtrester, brød. Kompostér eller brug kommunens bio-pose.</p></div>
+        <div class="mini-card"><span class="icon">🔋</span><h4>Elektronik og batterier</h4><p>ALDRIG i normalt skrald! Aflevér på genbrugsstationen eller i supermarkedets samlebøtte.</p></div>
+        <div class="mini-card"><span class="icon">📱</span><h4>Affaldsappen</h4><p>De fleste kommuner har en app der viser hvad du smider i hvilken spand. Gratis og super nem.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ADMINISTRATION ═══════════════ -->
+<div class="page" id="admin">
+  <div class="page-header">
+    <div class="breadcrumb">📄 Administration & Dokumenter</div>
+    <h1>Det kedelige – men vigtige</h1>
+    <p>Glem bare én ting her, og det kan koste dig dyrt</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Din flytning-tjekliste</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Opgave</th><th>Hjemmeside</th><th>Vigtighed</th></tr></thead>
+            <tbody>
+              <tr><td>Meld flytning til folkeregistret</td><td>borger.dk (senest 5 dage efter flytning!)</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Opsæt eller opdater MitID</td><td>mitid.dk</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Aktiver din e-Boks</td><td>e-boks.dk</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Søg om SU (udeboende)</td><td>su.dk</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Tegn indboforsikring</td><td>Tryg, Alm. Brand, Bauta m.fl.</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Opdater din NemKonto</td><td>Din bank</td><td class="stars">⭐⭐⭐</td></tr>
+              <tr><td>Tjek dit sygesikringsbevis</td><td>sundhed.dk</td><td class="stars">⭐⭐</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip red">⚠️ Du har kun 5 dage efter du er flyttet ind til at melde adresseændring – glem ikke!</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">MitID og e-Boks – hvad er det?</div>
+      <div class="grid2">
+        <div class="card">
+          <h3>🔑 MitID</h3>
+          <p>Din digitale identitet – nødvendig for at logge ind på ALLE offentlige systemer: SKAT, SU, borger.dk, din bank og meget mere. Erstattede NemID i 2023.</p>
+          <div class="tip" style="margin-top:14px;">Hav altid din MitID-app klar på telefonen!</div>
+        </div>
+        <div class="card">
+          <h3>📬 e-Boks</h3>
+          <p>Din digitale postkasse. Her modtager du ALLE breve fra det offentlige: SKAT, SU, kommunen, sygehuset m.m. Aktivér den med det samme!</p>
+          <div class="tip" style="margin-top:14px;">Sæt notifikationer til – vigtige breve kræver handling inden for en frist.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Forsikringer du bør have</div>
+      <div class="grid3">
+        <div class="mini-card">
+          <span class="icon">🏠</span>
+          <h4>Indboforsikring</h4>
+          <span class="badge teal">Ca. 100-150 kr./md.</span>
+          <p style="margin-top:8px;">Dækker dine ejendele ved tyveri, brand og vandskade. MUST HAVE som studerende.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🏥</span>
+          <h4>Ulykkesforsikring</h4>
+          <span class="badge gold">Tjek forældrene</span>
+          <p style="margin-top:8px;">Mange er dækket af forældrenes forsikring til de er 24 år. Spørg dem!</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">📱</span>
+          <h4>Telefonforsikring</h4>
+          <span class="badge coral">Overvej det</span>
+          <p style="margin-top:8px;">Din indboforsikring dækker ofte allerede telefonen. Tjek din police inden du tegner en separat.</p>
+        </div>
+      </div>
+      <div class="tip">💡 Sammenlign priser på <strong>forsikringsguiden.dk</strong> – der kan du spare hundredvis af kroner om året!</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SOCIALT ═══════════════ -->
+<div class="page" id="socialt">
+  <div class="page-header">
+    <div class="breadcrumb">❤️ Socialt Liv & Trivsel</div>
+    <h1>Du er ikke alene om at starte på nyt</h1>
+    <p>Alle andre kender heller ikke nogen i starten</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Find fællesskaber i Esbjerg</div>
+      <div class="grid2">
+        <div class="mini-card"><span class="icon">🎓</span><h4>Studiestart</h4><p>Mød din studiegruppe og deltag i rus-turene. Her starter de fleste venskaber.</p></div>
+        <div class="mini-card"><span class="icon">🏋️</span><h4>Sport og motion</h4><p>Tilmeld dig et sportshold. Billigt, sjovt og super godt for at møde nye mennesker.</p></div>
+        <div class="mini-card"><span class="icon">🤝</span><h4>Frivilligt arbejde</h4><p>Mange foreninger søger hjælpere. Du møder folk og giver noget tilbage til byen.</p></div>
+        <div class="mini-card"><span class="icon">📱</span><h4>Facebook-grupper</h4><p>Søg "Studerende i Esbjerg" – her arrangeres fællesspisning, ture og hygge.</p></div>
+        <div class="mini-card"><span class="icon">🍳</span><h4>Madklub på kollegiet</h4><p>Foreslå at I laver mad sammen et par gange om ugen. Delt mad smager altid bedre.</p></div>
+        <div class="mini-card"><span class="icon">🌊</span><h4>Naturen</h4><p>Esbjerg ligger ved Vesterhavet. Tur til stranden er gratis og giver fred i sindet.</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Balancen mellem studie, arbejde og fritid</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Aktivitet</th><th>Anbefalet tid pr. uge</th><th>Bemærkning</th></tr></thead>
+            <tbody>
+              <tr><td>Studie (timer + forberedelse)</td><td>30–40 timer</td><td>Dit primære fokus</td></tr>
+              <tr><td>Deltidsjob</td><td>Max 10–15 timer</td><td>Mere kan gå ud over studiet</td></tr>
+              <tr><td>Søvn</td><td>7–9 timer pr. nat</td><td>Undervurdér ikke søvnen!</td></tr>
+              <tr><td>Motion og sociale aktiviteter</td><td>Min. 5–10 timer</td><td>Vigtigt for trivslen</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip green">💡 Brug Google Calendar til at planlægge din uge. Når du kan se det visuelt, er det nemmere at holde balancen.</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Håndtering af ensomhed og hjemve</div>
+      <div class="card">
+        <p style="margin-bottom:16px;color:var(--muted);">Det er helt normalt at savne hjemmet de første uger. Det går over – her er hvad der hjælper:</p>
+        <ul class="checklist">
+          <li>Ring til familie og venner – men sæt også tid af til at møde nye mennesker</li>
+          <li>Gå en tur i byen – bekendtskab med omgivelserne giver tryghed</li>
+          <li>Sæt dig et lille mål for ugen: "Jeg siger hej til to nye mennesker"</li>
+          <li>Skab rutiner – faste tidspunkter til mad, motion og studie giver tryghed</li>
+          <li>Skriv dagbog – det hjælper at bearbejde nye oplevelser og følelser</li>
+          <li>Tal med studievejlederen hvis det bliver for svært – de er der netop for dig</li>
+        </ul>
+        <div class="tip green">💚 Husk: De studerende du møder på gangen er i præcis den samme situation. Alle starter forfra – du er ikke alene!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ SKAT ═══════════════ -->
+<div class="page" id="skat">
+  <div class="page-header">
+    <div class="breadcrumb">💸 Skat</div>
+    <h1>Forstå din skat</h1>
+    <p>Det lyder kedeligt – men det kan spare dig for mange penge</p>
+  </div>
+  <div class="container">
+
+    <div class="section">
+      <div class="section-title">Hvad er skat – kort fortalt?</div>
+      <div class="card">
+        <p style="margin-bottom:14px;">Skat er den procentdel af din indkomst, du betaler til staten. Til gengæld får du gratis sundhedsvæsen, uddannelse, veje og meget mere. Som studerende er din indkomst typisk lav, så du betaler også relativt lidt.</p>
+        <div class="tip green">💡 Det meste sker automatisk via SKAT (skattestyrelsen.dk) og din arbejdsgivers lønindberetning – men du skal stadig tjekke din forskudsopgørelse!</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">De vigtigste begreber</div>
+      <div class="grid2">
+        <div class="mini-card">
+          <span class="icon">📋</span>
+          <h4>Forskudsopgørelse</h4>
+          <p>Dit skattekort for det kommende år. Her angiver du forventet indkomst – og det afgør, hvor meget du trækkes i skat hver måned. Ret den straks hvis din indkomst ændrer sig!</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">📄</span>
+          <h4>Årsopgørelse</h4>
+          <p>Opgørelse over hvad du faktisk tjente og betalte i skat det forrige år. Har du betalt for meget, får du penge tilbage. For lidt – og du skal betale.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">🪙</span>
+          <h4>Personfradrag</h4>
+          <p>Det beløb du tjener skattefrit hvert år. I 2024 er det <strong>54.100 kr.</strong> Det svarer til ca. 4.500 kr./md. – så tjener du under det, betaler du næsten ingen skat.</p>
+        </div>
+        <div class="mini-card">
+          <span class="icon">💳</span>
+          <h4>Trækprocent</h4>
+          <p>Den procent din arbejdsgiver trækker af din løn til SKAT. Den fremgår af dit skattekort. For de fleste studerende med lav indkomst er den 0–35%.</p>
+        </div>
+        </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Hvad betaler du typisk som studerende?</div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Indkomst pr. måned</th><th>AM-Bidrag (8%)</th><th>indkomstskat</th><th>samlet betalt</th><th>udbetalt</th></tr></thead>
+            <tbody>
+              <tr><td>4.000 kr.</td><td>320 kr.</td><td>0 kr.</td><td><strong>320 kr.</strong></td><td>3.680 kr.</td></tr>
+              <tr><td>6.000 kr.</td><td>480 kr.</td><td>179 kr.</td><td><strong>659 kr.</strong></td><td>5.341 kr.</td></tr>
+              <tr><td>8.000 kr.</td><td>640 kr.</td><td>771 kr.</td><td><strong>1.411 kr.</strong></td><td>6.589 kr.</td></tr>
+              <tr><td>10.000 kr.</td><td>800 kr.</td><td>1.322 kr.</td><td><strong>2.122 kr.</strong></td><td>7.878 kr.</td></tr>
+              <tr><td>13.000 kr.</td><td>1.040 kr.</td><td>2.210 kr.</td><td><strong>3.250 kr.</strong></td><td>9.750 kr.</td></tr>
+              <tr><td>15.000 kr.</td><td>1.200 kr.</td><td>2.802 kr.</td><td><strong>4.002 kr.</strong></td><td>10.998 kr.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip">💡 SU er skattepligtig indkomst – og skal derfor også regnes oveni din imkomst pr. månede</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Din skattetjekliste som ny studerende</div>
+      <div class="card">
+        <ul class="checklist">
+          <li>Log ind på <strong>skat.dk</strong> med MitID og tjek din forskudsopgørelse</li>
+          <li>Ret din forventede indkomst hvis du får et deltidsjob</li>
+          <li>Giv dit skattekort til din arbejdsgiver (sker digitalt automatisk i dag)</li>
+          <li>Tjek årsopgørelsen i marts hvert år – og hent din eventuelle restskat eller tilbagebetaling</li>
+          <li>Fradrag for kørsel? Tjek "Kørselsfradrag" hvis du kører over 12 km til arbejde/studie</li>
+        </ul>
+        <div class="tip red">⚠️ Glemmer du at opdatere din forskudsopgørelse ved nyt job, risikerer du at betale for lidt eller for meget i skat og få en ubehagelig overraskelse til marts!</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🧮 Skatteberegner</div>
+      <div class="card" id="skat-beregner">
+        <p style="margin-bottom:18px;color:var(--muted);font-size:0.93em;">Indtast din månedlige bruttoløn, dit personfradrag og trækprocenten fra dit skattekort. Formlen følger den officielle danske beregningsmetode: AM-bidrag trækkes <em>først</em>, og indkomstskatten beregnes kun af det resterende beløb.</p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:8px;align-items:flex-end;">
+          <div style="flex:2;min-width:180px;">
+            <label style="display:block;font-weight:600;font-size:0.88em;color:var(--navy);margin-bottom:6px;">Bruttoløn pr. måned – L (kr.)</label>
+            <input type="number" id="sb-indkomst" placeholder="f.eks. 7000" min="0" max="500000" step="100"
+              style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1em;color:var(--text);background:var(--cream);outline:none;transition:border 0.2s;"
+              oninput="beregnSkat()" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div style="flex:2;min-width:160px;">
+            <label style="display:block;font-weight:600;font-size:0.88em;color:var(--navy);margin-bottom:6px;">Månedligt personfradrag – F (kr.)</label>
+            <input type="number" id="sb-fradrag" value="4508" min="0" max="50000" step="100"
+              style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1em;color:var(--text);background:var(--cream);outline:none;transition:border 0.2s;"
+              oninput="beregnSkat()" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div style="flex:1;min-width:130px;">
+            <label style="display:block;font-weight:600;font-size:0.88em;color:var(--navy);margin-bottom:6px;">Trækprocent – T (%)</label>
+            <input type="number" id="sb-traek" value="37" min="0" max="60" step="0.1"
+              style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:1em;color:var(--text);background:var(--cream);outline:none;transition:border 0.2s;"
+              oninput="beregnSkat()" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+        </div>
+        <p style="font-size:0.8em;color:var(--muted);margin-bottom:18px;">💡 Personfradrag 2026: 54.100 kr./år = <strong>4.508 kr./md.</strong> · Trækprocenten finder du på dit skattekort på skat.dk</p>
+
+        <!-- Resultat -->
+        <div id="sb-resultat" style="display:none;">
+          <div style="background:var(--navy);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;">
+              <div>
+                <div style="font-size:0.72em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Bruttoindkomst</div>
+                <div id="sb-brutto" style="font-family:'Fraunces',serif;font-size:1.5em;font-weight:800;color:#fff;"></div>
+              </div>
+              <div>
+                <div style="font-size:0.72em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Samlet skat</div>
+                <div id="sb-total-skat" style="font-family:'Fraunces',serif;font-size:1.5em;font-weight:800;color:var(--coral);"></div>
+              </div>
+              <div>
+                <div style="font-size:0.72em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Udbetalt</div>
+                <div id="sb-udbetalt" style="font-family:'Fraunces',serif;font-size:1.5em;font-weight:800;color:var(--gold);"></div>
+              </div>
+              <div>
+                <div style="font-size:0.72em;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Effektiv skattepct.</div>
+                <div id="sb-pct" style="font-family:'Fraunces',serif;font-size:1.5em;font-weight:800;color:rgba(255,255,255,0.85);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Skattepost</th><th>Grundlag</th><th>Sats</th><th>Beløb/md.</th></tr></thead>
+              <tbody id="sb-tabel"></tbody>
+            </table>
+          </div>
+          <div id="sb-note" class="tip" style="margin-top:12px;font-size:0.88em;"></div>
+        </div>
+        <div id="sb-tom" style="text-align:center;padding:20px;color:var(--muted);font-size:0.93em;">← Indtast din indkomst ovenfor for at se beregningen</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Nyttige links</div>
+      <div class="grid2">
+        <div class="mini-card"><span class="icon">🌐</span><h4>skat.dk</h4><p>Ret din forskudsopgørelse, se årsopgørelse og beregn din skat. Log ind med MitID.</p></div>
+        <div class="mini-card"><span class="icon">📱</span><h4>Skats app</h4><p>"Skat" appen (iOS og Android) giver dig hurtig adgang til din skattemappe og årsopgørelse.</p></div>
+        <div class="mini-card"><span class="icon">📞</span><h4>Skattetelefonen</h4><p>Ring på 72 22 18 18 – de hjælper dig med alle spørgsmål om skat. Gratis!</p></div>
+        <div class="mini-card"><span class="icon">🧮</span><h4>Beregner</h4><p>Brug SKATs skatteberegner på skat.dk til at se præcis hvad du skal betale ved en given indkomst.</p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── SKATTEBEREGNER – officiel dansk formel ──
+  // Trin 1: A = L × 0,08          (AM-bidrag, 8% af bruttoløn)
+  // Trin 2: G = (L − A) − F       (Skattegrundlag: løn efter AM minus personfradrag)
+  // Trin 3: S = G × (T/100)       (Indkomstskat; S = 0 hvis G < 0)
+  // Trin 4: U = L − A − S         (Udbetalt beløb)
+
+  function fmt(kr) {
+    return Math.round(kr).toLocaleString('da-DK') + ' kr.';
+  }
+
+  function beregnSkat() {
+    const L = parseFloat(document.getElementById('sb-indkomst').value) || 0;
+    const F = parseFloat(document.getElementById('sb-fradrag').value) || 0;
+    const T = parseFloat(document.getElementById('sb-traek').value) || 0;
+
+    const harInput = L > 0;
+    document.getElementById('sb-resultat').style.display = harInput ? 'block' : 'none';
+    document.getElementById('sb-tom').style.display = harInput ? 'none' : 'block';
+    if (!harInput) return;
+
+    // Trin 1 – AM-bidrag
+    const A = L * 0.08;
+
+    // Trin 2 – Skattegrundlag
+    const G = (L - A) - F;
+
+    // Trin 3 – Indkomstskat
+    const S = G > 0 ? G * (T / 100) : 0;
+
+    // Trin 4 – Udbetalt
+    const U = L - A - S;
+
+    const samletSkat = A + S;
+    const effPct = L > 0 ? (samletSkat / L * 100).toFixed(1) : '0';
+
+    // Resumé
+    document.getElementById('sb-brutto').textContent = fmt(L);
+    document.getElementById('sb-total-skat').textContent = fmt(samletSkat);
+    document.getElementById('sb-udbetalt').textContent = fmt(U);
+    document.getElementById('sb-pct').textContent = effPct + '%';
+
+    // Tabel med trin-for-trin visning
+    const tbody = document.getElementById('sb-tabel');
+    tbody.innerHTML = `
+      <tr>
+        <td><strong>Trin 1 – AM-bidrag</strong></td>
+        <td style="color:var(--muted);font-size:0.9em;">L × 8% = ${fmt(L)} × 8%</td>
+        <td>8%</td>
+        <td><strong>${fmt(A)}</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Trin 2 – Løn efter AM</strong></td>
+        <td style="color:var(--muted);font-size:0.9em;">L − A = ${fmt(L)} − ${fmt(A)}</td>
+        <td>—</td>
+        <td><strong>${fmt(L - A)}</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Trin 2 – Skattegrundlag (G)</strong></td>
+        <td style="color:var(--muted);font-size:0.9em;">(L − A) − F = ${fmt(L - A)} − ${fmt(F)}</td>
+        <td>—</td>
+        <td><strong>${G > 0 ? fmt(G) : '0 kr. (under fradrag)'}</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Trin 3 – Indkomstskat (S)</strong></td>
+        <td style="color:var(--muted);font-size:0.9em;">G × T/100 = ${G > 0 ? fmt(G) : '0 kr.'} × ${T}%</td>
+        <td>${T}%</td>
+        <td><strong>${fmt(S)}</strong></td>
+      </tr>
+      <tr class="tr-total">
+        <td colspan="3"><strong>💸 AM-bidrag + Indkomstskat</strong></td>
+        <td><strong>${fmt(samletSkat)}</strong></td>
+      </tr>
+      <tr class="tr-total" style="background:var(--teal-light)!important;">
+        <td colspan="3"><strong>✅ Trin 4 – Udbetalt (U = L − A − S)</strong></td>
+        <td><strong style="color:var(--teal);">${fmt(U)}</strong></td>
+      </tr>`;
+
+    // Note
+    const noteEl = document.getElementById('sb-note');
+    if (G <= 0) {
+      noteEl.className = 'tip green';
+      noteEl.innerHTML = `✅ Din løn efter AM-bidrag (${fmt(L - A)}) er lavere end dit personfradrag (${fmt(F)}), så du betaler <strong>ingen indkomstskat</strong> – kun AM-bidraget på ${fmt(A)}.`;
+    } else {
+      noteEl.className = 'tip';
+      noteEl.innerHTML = `📊 Trækprocenten (${T}%) finder du på dit skattekort på <strong>skat.dk</strong>.`;
+    }
+  }
+
+  function goTo(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if (b.getAttribute('onclick') === "goTo('" + id + "')") b.classList.add('active');
+    });
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
