@@ -6,6 +6,7 @@
 <title>Flytte Hjemmefra – Din Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
   :root {
     --cream: #FFFDF7;
@@ -23,7 +24,7 @@
     --radius: 12px;
     --shadow: 0 2px 20px rgba(28,43,58,0.08);
   }
-
+  
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -975,6 +976,48 @@
     </div>
 
     <div class="section">
+      <div class="section-title">🗺️ Mine steder i Esbjerg</div>
+      <div class="card" style="padding:0;overflow:hidden;">
+
+        <!-- Kort -->
+        <div id="esbjerg-kort" style="height:360px;width:100%;z-index:1;"></div>
+
+        <!-- Formular til at tilføje steder -->
+        <div style="padding:20px 24px;border-top:1px solid var(--border);background:var(--cream);">
+          <p style="font-size:0.88em;color:var(--muted);margin-bottom:14px;">📍 Klik på kortet for at placere en nål, udfyld derefter navn og beskrivelse.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;">
+            <div style="flex:2;min-width:140px;">
+              <label style="display:block;font-weight:600;font-size:0.82em;color:var(--navy);margin-bottom:5px;">Stedets navn</label>
+              <input id="kort-navn" type="text" placeholder="f.eks. Min café" maxlength="60"
+                style="width:100%;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.93em;color:var(--text);background:var(--white);outline:none;transition:border 0.2s;"
+                onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')tilfoejSted()">
+            </div>
+            <div style="flex:3;min-width:180px;">
+              <label style="display:block;font-weight:600;font-size:0.82em;color:var(--navy);margin-bottom:5px;">Beskrivelse</label>
+              <input id="kort-beskrivelse" type="text" placeholder="f.eks. Bedste kaffe i byen" maxlength="120"
+                style="width:100%;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.93em;color:var(--text);background:var(--white);outline:none;transition:border 0.2s;"
+                onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')tilfoejSted()">
+            </div>
+            <div style="flex-shrink:0;">
+              <button onclick="tilfoejSted()"
+                style="padding:9px 18px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:0.9em;cursor:pointer;transition:background 0.2s;white-space:nowrap;"
+                onmouseover="this.style.background='#1f5c54'" onmouseout="this.style.background='var(--teal)'">
+                ➕ Tilføj sted
+              </button>
+            </div>
+          </div>
+          <div id="kort-feedback" style="margin-top:10px;font-size:0.85em;display:none;"></div>
+        </div>
+
+        <!-- Liste over gemte steder -->
+        <div id="kort-liste-wrap" style="padding:0 24px 20px;display:none;">
+          <div style="font-weight:600;font-size:0.85em;color:var(--navy);margin-bottom:10px;padding-top:4px;">Dine steder:</div>
+          <div id="kort-liste" style="display:flex;flex-direction:column;gap:7px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
       <div class="section-title">Håndtering af ensomhed og hjemve</div>
       <div class="card">
         <p style="margin-bottom:16px;color:var(--muted);">Det er helt normalt at savne hjemmet de første uger. Det går over – her er hvad der hjælper:</p>
@@ -1241,6 +1284,155 @@
       if (b.getAttribute('onclick') === "goTo('" + id + "')") b.classList.add('active');
     });
     window.scrollTo(0, 0);
+    // Initiér kortet første gang socialt-siden vises
+    if (id === 'socialt' && !kortInitieret) initKort();
+  }
+</script>
+
+<!-- Leaflet kort -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+  let kort = null;
+  let kortInitieret = false;
+  let afventerKlik = null; // {lat, lng} for det seneste kortklik
+  let markoerListe = [];   // {marker, id}
+  let steder = JSON.parse(localStorage.getItem('esbjerg-steder') || '[]');
+
+  const IKON_NORMAL = L.divIcon({
+    className: '',
+    html: `<div style="width:30px;height:30px;background:var(--teal,#2A7A6F);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+             <div style="transform:rotate(45deg);width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;">📍</div>
+           </div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -32]
+  });
+
+  const IKON_AFVENT = L.divIcon({
+    className: '',
+    html: `<div style="width:30px;height:30px;background:#F5A623;border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);animation:puls 1s infinite;">
+             <div style="transform:rotate(45deg);width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;">?</div>
+           </div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -32]
+  });
+
+  function initKort() {
+    if (kortInitieret) return;
+    kortInitieret = true;
+
+    kort = L.map('esbjerg-kort', { zoomControl: true }).setView([55.4765, 8.4594], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(kort);
+
+    // Genindlæs gemte steder
+    steder.forEach(s => tilfoejMarkoer(s, false));
+    opdaterListe();
+
+    // Klik på kortet = sæt afventende nål
+    kort.on('click', function(e) {
+      // Fjern tidligere afventende nål
+      if (afventerKlik && afventerKlik._markoer) {
+        kort.removeLayer(afventerKlik._markoer);
+      }
+      const tmp = L.marker([e.latlng.lat, e.latlng.lng], { icon: IKON_AFVENT }).addTo(kort);
+      tmp.bindPopup('👆 Udfyld navn og beskrivelse nedenfor og tryk "Tilføj sted"').openPopup();
+      afventerKlik = { lat: e.latlng.lat, lng: e.latlng.lng, _markoer: tmp };
+      visFeedback('📍 Placering valgt – udfyld navn og beskrivelse nedenfor.', 'info');
+      document.getElementById('kort-navn').focus();
+    });
+  }
+
+  function tilfoejMarkoer(sted, gem) {
+    const m = L.marker([sted.lat, sted.lng], { icon: IKON_NORMAL }).addTo(kort);
+    m.bindPopup(`<strong>${sted.navn}</strong>${sted.beskrivelse ? '<br><span style="color:#6B7A8D;font-size:0.9em;">' + sted.beskrivelse + '</span>' : ''}`);
+    markoerListe.push({ id: sted.id, marker: m });
+    if (gem) {
+      steder.push(sted);
+      localStorage.setItem('esbjerg-steder', JSON.stringify(steder));
+      opdaterListe();
+    }
+  }
+
+  function tilfoejSted() {
+    const navn = document.getElementById('kort-navn').value.trim();
+    const beskrivelse = document.getElementById('kort-beskrivelse').value.trim();
+
+    if (!navn) { visFeedback('⚠️ Skriv et navn til stedet.', 'advarsel'); return; }
+    if (!afventerKlik) { visFeedback('⚠️ Klik på kortet for at vælge en placering først.', 'advarsel'); return; }
+
+    // Fjern den midlertidige gule nål
+    kort.removeLayer(afventerKlik._markoer);
+
+    const sted = {
+      id: Date.now(),
+      navn,
+      beskrivelse,
+      lat: afventerKlik.lat,
+      lng: afventerKlik.lng
+    };
+
+    tilfoejMarkoer(sted, true);
+    afventerKlik = null;
+
+    // Ryd formular
+    document.getElementById('kort-navn').value = '';
+    document.getElementById('kort-beskrivelse').value = '';
+    visFeedback('✅ "' + navn + '" er tilføjet til kortet!', 'ok');
+  }
+
+  function sletSted(id) {
+    // Fjern markør fra kort
+    const idx = markoerListe.findIndex(m => m.id === id);
+    if (idx !== -1) { kort.removeLayer(markoerListe[idx].marker); markoerListe.splice(idx, 1); }
+    // Fjern fra liste og gem
+    steder = steder.filter(s => s.id !== id);
+    localStorage.setItem('esbjerg-steder', JSON.stringify(steder));
+    opdaterListe();
+  }
+
+  function flyTilSted(id) {
+    const entry = markoerListe.find(m => m.id === id);
+    const sted = steder.find(s => s.id === id);
+    if (entry && sted) {
+      kort.flyTo([sted.lat, sted.lng], 16);
+      entry.marker.openPopup();
+    }
+  }
+
+  function opdaterListe() {
+    const wrap = document.getElementById('kort-liste-wrap');
+    const liste = document.getElementById('kort-liste');
+    if (steder.length === 0) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    liste.innerHTML = steder.map(s => `
+      <div style="display:flex;align-items:center;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 14px;">
+        <span style="font-size:1.1em;flex-shrink:0;">📍</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:0.9em;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.navn}</div>
+          ${s.beskrivelse ? `<div style="font-size:0.8em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.beskrivelse}</div>` : ''}
+        </div>
+        <button onclick="flyTilSted(${s.id})" title="Zoom til sted"
+          style="background:var(--teal-light);border:none;border-radius:6px;padding:5px 9px;cursor:pointer;font-size:0.78em;color:var(--teal);font-weight:600;white-space:nowrap;">
+          🔍 Vis
+        </button>
+        <button onclick="sletSted(${s.id})" title="Slet sted"
+          style="background:var(--coral-light);border:none;border-radius:6px;padding:5px 9px;cursor:pointer;font-size:0.78em;color:var(--coral);font-weight:600;">
+          🗑
+        </button>
+      </div>`).join('');
+  }
+
+  function visFeedback(tekst, type) {
+    const el = document.getElementById('kort-feedback');
+    el.style.display = 'block';
+    el.style.color = type === 'ok' ? 'var(--teal)' : type === 'advarsel' ? 'var(--coral)' : 'var(--navy)';
+    el.textContent = tekst;
+    if (type === 'ok') setTimeout(() => { el.style.display = 'none'; }, 3000);
   }
 </script>
 </body>
